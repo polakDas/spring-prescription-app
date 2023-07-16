@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="base::layout(~{::content})"
+>
+  <head>
+    <title>My Page</title>
+  </head>
+  <body>
+    <div th:fragment="content">
+      <h1>This is prescriptions</h1>
+    </div>
+  </body>
+</html>
