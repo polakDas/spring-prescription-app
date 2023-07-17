@@ -1,1 +1,80 @@
-<h1>Prescription Details</h1>
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base::layout(~{::content})}"
+>
+  <head>
+    <title>My Page</title>
+  </head>
+  <body>
+    <div th:fragment="content">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card mt-5">
+            <div class="card-header text-center">
+              <h5>Doctor's Prescription</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p>
+                    <strong>Prescription Date:</strong>
+                    <span
+                      th:text="${#temporals.format(prescription.prescriptionDate, 'd MMMM yyyy')}"
+                    >
+                    </span>
+                  </p>
+                  <p>
+                    <strong>Patient Name:</strong>
+                    <span th:text="${prescription.patientName}"></span>
+                  </p>
+                  <p>
+                    <strong>Patient Age:</strong>
+                    <span th:text="${prescription.patientAge}"></span>
+                  </p>
+                  <p>
+                    <strong>Patient Gender:</strong>
+                    <span
+                      th:text="${#strings.capitalize(prescription.patientGender.name().toLowerCase())}"
+                    ></span>
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <p><strong>Diagnosis:</strong></p>
+                  <p th:text="${prescription.diagnosis}"></p>
+                  <p><strong>Medicines:</strong></p>
+                  <p th:text="${prescription.medicines}"></p>
+                  <p>
+                    <strong>Next Visit Date:</strong>
+                    <span
+                      th:text="${prescription.nextVisitDate != null ? (#temporals.format(prescription.nextVisitDate, 'd MMMM yyyy')) : 'N/A'}"
+                    ></span>
+                  </p>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-6">
+                  <a
+                    th:href="@{/prescriptions/{id}/edit(id=${prescription.id})}"
+                    th:text="Edit"
+                    class="btn btn-primary"
+                  ></a>
+                </div>
+                <div class="col-md-6 text-right">
+                  <form
+                    th:action="@{/prescriptions/delete/{id}(id=${prescription.id})}"
+                    th:method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete this prescription?')"
+                  >
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

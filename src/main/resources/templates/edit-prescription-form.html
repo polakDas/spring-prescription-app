@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base::layout(~{::content})}"
+>
+  <head> </head>
+  <body>
+    <div th:fragment="content">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <h1 class="display-4 text-center">Create new prescription</h1>
+          <form
+            th:action="@{/prescriptions/{id}(id=${prescription.id})}"
+            method="post"
+            th:object="${prescription}"
+            enctype="application/x-www-form-urlencoded"
+          >
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputPassword4">Patient Name</label>
+                <small class="text-danger">*</small>
+                <input
+                  type="text"
+                  th:field="*{patientName}"
+                  class="form-control"
+                  id="patientName"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('patientName')}"
+                  th:errors="*{patientName}"
+                ></small>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputCity">Patient Age</label>
+                <small class="text-danger">*</small>
+                <input
+                  type="number"
+                  th:field="*{patientAge}"
+                  class="form-control"
+                  id="patientAge"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('patientAge')}"
+                  th:errors="*{patientAge}"
+                ></small>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="patientGender">Patient Gender</label>
+                <small class="text-danger">*</small>
+                <select
+                  id="patientGender"
+                  class="form-control"
+                  th:field="*{patientGender}"
+                  required
+                >
+                  <option
+                    th:each="gender : ${genders}"
+                    th:value="${gender}"
+                    th:text="${#strings.capitalize(gender.name().toLowerCase())}"
+                    th:selected="${gender == prescription.patientGender}"
+                  ></option>
+                </select>
+                <small
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('patientGender')}"
+                  th:errors="*{patientGender}"
+                ></small>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label for="diagnosis">Diagnosis</label>
+                <textarea
+                  class="form-control"
+                  th:field="*{diagnosis}"
+                  id="diagnosis"
+                  rows="6"
+                  placeholder="Diagnosis name"
+                >
+                ${prescription.diagnosis}
+                </textarea>
+                <small
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('diagnosis')}"
+                  th:errors="*{diagnosis}"
+                ></small>
+              </div>
+              <div class="form-group col-6">
+                <label for="medicine">Medicine</label>
+                <textarea
+                  class="form-control"
+                  id="medicine"
+                  th:field="*{medicines}"
+                  rows="6"
+                  placeholder="Medicine name"
+                >
+                ${prescription.medicines}
+                </textarea>
+                <small
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('medicines')}"
+                  th:errors="*{medicines}"
+                ></small>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="prescriptionDate"
+                  >Prescription Date -
+                  <span
+                    class="text-info"
+                    th:if="${prescription.prescriptionDate}"
+                    th:text="${#temporals.format(prescription.prescriptionDate, 'd MMMM yyyy')}"
+                  ></span>
+                </label>
+                <small class="text-danger">*</small>
+                <input
+                  type="date"
+                  th:field="${prescription.prescriptionDate}"
+                  class="form-control"
+                  id="prescriptionDate"
+                  required
+                />
+                <small
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('prescriptionDate')}"
+                  th:errors="*{prescriptionDate}"
+                ></small>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="nextVisitDate"
+                  >Next Visit Date -
+                  <span
+                    class="text-info"
+                    th:if="${prescription.nextVisitDate}"
+                    th:text="${#temporals.format(prescription.nextVisitDate, 'd MMMM yyyy')}"
+                  ></span>
+                </label>
+                <input
+                  type="date"
+                  th:field="${prescription.nextVisitDate}"
+                  class="form-control"
+                  id="nextVisitDate"
+                />
+                <small
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('nextVisitDate')}"
+                  th:errors="*{nextVisitDate}"
+                ></small>
+              </div>
+              <script th:inline="javascript">
+                // validation
+                var currentDate = new Date().toLocaleDateString("en-CA");
+
+                document
+                  .getElementById("prescriptionDate")
+                  .setAttribute("max", currentDate);
+                document
+                  .getElementById("nextVisitDate")
+                  .setAttribute("min", currentDate);
+
+                // format date
+                // Get the model values using Thymeleaf expressions
+                // failed
+                var prescriptionDateValue = new Date(
+                  prescription.prescriptionDate
+                ).toLocaleDateString("en-CA");
+                var nextVisitDateValue = new Date(
+                  prescription.nextVisitDate
+                ).toLocaleDateString("en-CA");
+
+                document
+                  .getElementById("prescriptionDate")
+                  .setAttribute("th:value", prescriptionDateValue);
+                document
+                  .getElementById("nextVisitDate")
+                  .setAttribute("th:value", nextVisitDateValue);
+              </script>
+            </div>
+            <button type="submit" class="btn btn-primary col-12">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,14 +1,74 @@
 <!DOCTYPE html>
 <html
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="base::layout(~{::content})"
+  th:replace="~{base::layout(~{::content})}"
 >
   <head>
     <title>My Page</title>
   </head>
   <body>
     <div th:fragment="content">
-      <h1>This is prescriptions</h1>
+      <div class="col-12 mx-auto">
+        <div class="row align-items-center mb-5">
+          <div class="col-10">
+            <h1 class="display-4 text-center">Prescription List</h1>
+          </div>
+          <div class="col-2 text-right">
+            <a th:href="@{/prescriptions/new}">
+              <button class="btn btn-primary btn-sm">New Prescription</button>
+            </a>
+          </div>
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Patient Name</th>
+              <th scope="col">Age</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Next Visit Date</th>
+              <th scope="col">Medicines</th>
+              <th scope="col">Diagnosis</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="prescription : ${prescriptions}">
+              <td
+                th:text="${#temporals.format(prescription.prescriptionDate, 'd MMMM yyyy')}"
+              ></td>
+              <td>
+                <a
+                  th:href="@{/prescriptions/{id}(id=${prescription.id})}"
+                  th:text="${prescription.patientName}"
+                ></a>
+              </td>
+              <td th:text="${prescription.patientAge}"></td>
+              <td
+                th:text="${#strings.capitalize(prescription.patientGender.name().toLowerCase())}"
+              ></td>
+              <td
+                th:text="${prescription.nextVisitDate != null ? (#temporals.format(prescription.nextVisitDate, 'd MMMM yyyy')) : 'N/A'}"
+              ></td>
+              <td
+                th:text="${prescription.medicines != null && #strings.length(prescription.medicines) > 20 ? #strings.substring(prescription.medicines, 0, 20) + '...' : prescription.medicines != null ? prescription.medicines : 'N/A'}"
+              ></td>
+              <td
+                th:text="${prescription.diagnosis != null && #strings.length(prescription.diagnosis) > 20 ? #strings.substring(prescription.diagnosis, 0, 20) + '...' : prescription.diagnosis != null ? prescription.diagnosis : 'N/A'}"
+              ></td>
+              <td>
+                <button type="button" class="btn btn-primary btn-sm">
+                  <a
+                    th:href="@{/prescriptions/{id}/edit(id=${prescription.id})}"
+                    th:text="Edit"
+                    class="text-white"
+                  ></a>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </body>
 </html>

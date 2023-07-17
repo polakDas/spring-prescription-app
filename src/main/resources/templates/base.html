@@ -14,7 +14,7 @@
 
     <!-- Custom fonts for this template-->
     <link
-      href="vendor/fontawesome-free/css/all.min.css"
+      th:href="@{/vendor/fontawesome-free/css/all.min.css}"
       rel="stylesheet"
       type="text/css"
     />
@@ -24,22 +24,80 @@
     />
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet" />
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" />
   </head>
   <body>
     <header>
-      <p>Header</p>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarTogglerDemo01"
+        >
+          <div class="">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+              <li class="nav-item active">
+                <a class="nav-link" th:href="@{/}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/prescriptions}"
+                  >Prescriptions</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/prescriptions/report}"
+                  >Report</a
+                >
+              </li>
+
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  More
+                </a>
+                <ul class="dropdown-menu" style="overflow: hidden">
+                  <li class="nav-item bg-light">
+                    <a
+                      class="nav-link text-bold"
+                      th:href="@{/prescriptions/new}"
+                      >New Prescription</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      th:href="@{/api/v1/prescription/paginated}"
+                      >API(v1)</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="@{/logout}">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </header>
 
-    <main th:replace="${content}"></main>
+    <div class="container min-vh-100 mt-5">
+      <main th:replace="${content}"></main>
+    </div>
 
-    <footer>
-      <p>Footer</p>
+    <footer class="page-footer font-small blue">
+      <div class="footer-copyright text-center py-3">
+        © 2023 Copyright: Prescription app
+      </div>
     </footer>
 
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin-2.min.js"></script>
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+    <script th:src="@{/js/sb-admin-2.min.js}"></script>
   </body>
 </html>
