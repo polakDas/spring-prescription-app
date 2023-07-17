@@ -14,7 +14,7 @@
 
     <!-- Custom fonts for this template-->
     <link
-      th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+      th:href="@{/static/vendor/fontawesome-free/css/all.min.css}"
       rel="stylesheet"
       type="text/css"
     />
@@ -24,7 +24,7 @@
     />
 
     <!-- Custom styles for this template-->
-    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" />
+    <link th:href="@{/static/css/sb-admin-2.min.css}" rel="stylesheet" />
   </head>
   <body>
     <header>
@@ -77,7 +77,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="@{/logout}">Logout</a>
+                <a class="nav-link" th:href="@{/logout}">Logout</a>
               </li>
             </ul>
           </div>
@@ -95,9 +95,13 @@
       </div>
     </footer>
 
-    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
-    <script th:src="@{/js/sb-admin-2.min.js}"></script>
+    <script th:src="@{/static/vendor/jquery/jquery.min.js}"></script>
+    <script
+      th:src="@{/static/vendor/bootstrap/js/bootstrap.bundle.min.js}"
+    ></script>
+    <script
+      th:src="@{/static/vendor/jquery-easing/jquery.easing.min.js}"
+    ></script>
+    <script th:src="@{/static/js/sb-admin-2.min.js}"></script>
   </body>
 </html>
