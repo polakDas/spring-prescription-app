@@ -9,7 +9,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -74,14 +73,11 @@ public class Prescription {
     @Column(name = "next_visit_date")
     private LocalDate nextVisitDate;
 
-    @ManyToOne
-    private User user;
-
     @Override
     public String toString() {
         return "Prescription [id=" + id + ", prescriptionDate=" + prescriptionDate + ", patientName=" + patientName
                 + ", patientAge=" + patientAge + ", patientGender=" + patientGender + ", diagnosis=" + diagnosis
-                + ", medicines=" + medicines + ", nextVisitDate=" + nextVisitDate + ", user=" + user + "]";
+                + ", medicines=" + medicines + ", nextVisitDate=" + nextVisitDate + "]";
     }
 
     public long getId() {
@@ -146,14 +142,6 @@ public class Prescription {
 
     public void setNextVisitDate(LocalDate nextVisitDate) {
         this.nextVisitDate = nextVisitDate;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
 }
