@@ -33,12 +33,13 @@ public class ApiPrescriptionController {
 
     // paginated prescriptions
     @GetMapping("/paginated")
-    public Page<Prescription> getPaginatedPrescriptions(
+    public ResponseEntity<Page<Prescription>> getPaginatedPrescriptions(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
+        Page<Prescription> paginatedPrescriptions = prescriptionServiceImpl.getPaginatedPrescriptions(pageable);
 
-        return prescriptionServiceImpl.getPaginatedPrescriptions(pageable);
+        return ResponseEntity.ok(paginatedPrescriptions);
     }
 
 }
