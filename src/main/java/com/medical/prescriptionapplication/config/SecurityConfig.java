@@ -21,6 +21,9 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .csrf((csrf) -> csrf.disable())
+                                .headers((header) -> header
+                                                .frameOptions(Customizer.withDefaults())
+                                                .disable())
                                 .httpBasic(Customizer.withDefaults())
                                 .authorizeHttpRequests((request) -> request
                                                 .requestMatchers("/h2-console/**", "/static/**")
