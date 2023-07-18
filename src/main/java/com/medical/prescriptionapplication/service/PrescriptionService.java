@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.medical.prescriptionapplication.model.DayInfo;
 import com.medical.prescriptionapplication.model.Prescription;
 
 public interface PrescriptionService {
@@ -24,4 +25,6 @@ public interface PrescriptionService {
     List<Prescription> getPrescriptionsByDateRange(LocalDate startDate, LocalDate endDate);
 
     Page<Prescription> getPaginatedPrescriptions(Pageable pageable);
+
+    List<DayInfo> getPrescriptionCountByDay();
 }

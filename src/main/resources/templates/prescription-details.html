@@ -9,7 +9,7 @@
   <body>
     <div th:fragment="content">
       <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
           <div class="card mt-5">
             <div class="card-header text-center">
               <h5>Doctor's Prescription</h5>
@@ -18,15 +18,18 @@
               <div class="row">
                 <div class="col-md-6">
                   <p>
+                    <strong>Patient Name:</strong>
+                    <span
+                      class="bolder h5"
+                      th:text="${prescription.patientName}"
+                    ></span>
+                  </p>
+                  <p>
                     <strong>Prescription Date:</strong>
                     <span
                       th:text="${#temporals.format(prescription.prescriptionDate, 'd MMMM yyyy')}"
                     >
                     </span>
-                  </p>
-                  <p>
-                    <strong>Patient Name:</strong>
-                    <span th:text="${prescription.patientName}"></span>
                   </p>
                   <p>
                     <strong>Patient Age:</strong>
@@ -47,6 +50,7 @@
                   <p>
                     <strong>Next Visit Date:</strong>
                     <span
+                      class="bold text-info"
                       th:text="${prescription.nextVisitDate != null ? (#temporals.format(prescription.nextVisitDate, 'd MMMM yyyy')) : 'N/A'}"
                     ></span>
                   </p>

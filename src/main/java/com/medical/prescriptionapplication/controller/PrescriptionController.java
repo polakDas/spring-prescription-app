@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.medical.prescriptionapplication.model.DayInfo;
 import com.medical.prescriptionapplication.model.Prescription;
 import com.medical.prescriptionapplication.model.Prescription.Gender;
 import com.medical.prescriptionapplication.service.PrescriptionServiceImpl;
@@ -55,7 +56,7 @@ public class PrescriptionController {
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             Model model) {
         if (endDate == null) {
-            endDate = LocalDate.now();
+            endDate = startDate;
         }
 
         List<Prescription> prescriptions = prescriptionServiceImpl.getPrescriptionsByDateRange(startDate, endDate);
@@ -139,8 +140,14 @@ public class PrescriptionController {
     }
 
     @GetMapping("/report")
-    public String prescriptionReport() {
+    public String prescriptionReport(Model model) {
+        List<DayInfo> prescriptionCount = prescriptionServiceImpl.getPrescriptionCountByDay();
+        LocalDate reportDate = prescriptionCount.get(0).getDay();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy"); // like 17 July 2023
+        String formattedDate = reportDate.format(formatter);
 
+        model.addAttribute("prescriptionCount", prescriptionCount);
+        model.addAttribute("formattedDate", formattedDate);
         return "prescription-report";
     }
 }

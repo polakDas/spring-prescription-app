@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.medical.prescriptionapplication.model.DayInfo;
 import com.medical.prescriptionapplication.model.Prescription;
 import com.medical.prescriptionapplication.repository.PrescriptionRepository;
 
@@ -61,6 +62,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public Page<Prescription> getPaginatedPrescriptions(Pageable pageable) {
         return prescriptionRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<DayInfo> getPrescriptionCountByDay() {
+        return prescriptionRepository.getPrescriptionCountByDay();
     }
 
 }

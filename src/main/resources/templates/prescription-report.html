@@ -1,1 +1,46 @@
-<h1>Report</h1>
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base::layout(~{::content})}"
+>
+  <head>
+    <title>My Page</title>
+  </head>
+  <body>
+    <div th:fragment="content">
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <h1>Report - Day Wise Prescription Count</h1>
+          <table class="table table-hover table-white-50">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Total Prescription</th>
+              </tr>
+            </thead>
+            <tbody>
+              <div th:each="dayInfo : ${prescriptionCount}">
+                <tr>
+                  <th scope="row"></th>
+                  <td>
+                    <a
+                      th:href="@{/prescriptions/prescriptions-between-dates(startDate=${dayInfo.day})}"
+                    >
+                      <button
+                        type="button"
+                        th:text="${formattedDate}"
+                        class="btn btn-link"
+                      ></button>
+                    </a>
+                  </td>
+                  <td th:text="${dayInfo.count}"></td>
+                </tr>
+              </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
