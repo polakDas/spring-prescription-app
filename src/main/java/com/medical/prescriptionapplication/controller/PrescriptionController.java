@@ -1,9 +1,11 @@
 package com.medical.prescriptionapplication.controller;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.medical.prescriptionapplication.model.Prescription;
 import com.medical.prescriptionapplication.model.Prescription.Gender;
@@ -28,8 +31,34 @@ public class PrescriptionController {
 
     // get all the prescriptions and send it to the root url
     @GetMapping
-    public String getAllPrescriptions(Model model) {
-        List<Prescription> prescriptions = prescriptionServiceImpl.getAllPrescriptions();
+    public String getAllPrescriptions(@RequestParam(value = "all", defaultValue = "false") boolean all, Model model) {
+        if (all == true) {
+            List<Prescription> prescriptions = prescriptionServiceImpl.getAllPrescriptions();
+            model.addAttribute("prescriptions", prescriptions);
+
+            return "prescriptions";
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfMonth = today.withDayOfMonth(1);
+
+        List<Prescription> prescriptions = prescriptionServiceImpl.getPrescriptionsByDateRange(firstDayOfMonth, today);
+        model.addAttribute("prescriptions", prescriptions);
+
+        return "prescriptions";
+    }
+
+    // get precriptions between dates
+    @GetMapping("/prescriptions-between-dates")
+    public String getPrescriptionsBetweenDates(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            Model model) {
+        if (endDate == null) {
+            endDate = LocalDate.now();
+        }
+
+        List<Prescription> prescriptions = prescriptionServiceImpl.getPrescriptionsByDateRange(startDate, endDate);
         model.addAttribute("prescriptions", prescriptions);
 
         return "prescriptions";
