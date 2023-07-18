@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base::layout(~{::content})}"
+>
+  <head>
+    <title>My Page</title>
+  </head>
+  <body>
+    <div th:fragment="content">
+      <div class="container mt-4">
+        <h2 class="text-center">API Data Table</h2>
+
+        <fieldset>
+          <legend>NLM Disclaimer</legend>
+          <small class="text-info" th:text="${apiData.get('nlmDisclaimer').asText()}"></small>
+        </fieldset>
+        
+        <fieldset>
+          <legend>Source Disclaimer</legend>
+          <span th:each="interactionTypeGroup : ${apiData.get('interactionTypeGroup')}">
+            <small class="text-info" th:text="${interactionTypeGroup.get('sourceDisclaimer').asText()}"></small>
+          </span>
+        </fieldset>
+
+        <div class="pt-2">
+          <span class="h5 text-success" th:each="interactionTypeGroup : ${apiData.get('interactionTypeGroup')}">Source: 
+            <span class="h5 text-success" th:text="${interactionTypeGroup.get('sourceName').asText()}"></span>
+          </span>
+        </div>
+
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr class="text-center">
+                    <th>Source Concept ID</th>
+                    <th>Source Concept Name</th>
+                    <th>Min Concept Name</th>
+                    <th>Min Concept rxcui</th>
+                    <th>Source Concept url</th>
+                </tr>
+            </thead>
+            <tbody th:each="interactionTypeGroup : ${apiData.get('interactionTypeGroup')}">
+              <span th:each="interactionType : ${interactionTypeGroup.get('interactionType')}">
+                <span th:each="interactionPair : ${interactionType.get('interactionPair')}">
+                  <span th:each="interactionConcept : ${interactionPair.get('interactionConcept')}">
+                    <tr class="text-center">
+                      <td th:text="${interactionConcept.get('sourceConceptItem').get('id').asText()}"></td>
+                      <td th:text="${interactionConcept.get('sourceConceptItem').get('name').asText()}"></td>
+                      <td th:text="${interactionConcept.get('minConceptItem').get('name').asText()}"></td>
+                      <td th:text="${interactionConcept.get('minConceptItem').get('rxcui').asText()}"></td>
+                      <td>
+                        <a th:href="${interactionConcept.get('sourceConceptItem').get('url').asText}" target="_blank">
+                          <button class="btn btn-link">Goto source</button>
+                        </a>
+                      </td>
+                    </tr>
+                  </span>
+                </span>
+              </span>
+            </tbody>
+        </table>
+      </div>
+  </body>
+</html>

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.medical.prescriptionapplication.model.DayInfo;
 import com.medical.prescriptionapplication.model.Prescription;
 import com.medical.prescriptionapplication.model.Prescription.Gender;
@@ -24,6 +27,10 @@ import com.medical.prescriptionapplication.service.PrescriptionServiceImpl;
 @Controller
 @RequestMapping("/prescriptions")
 public class PrescriptionController {
+
+    // @Autowired
+    // private RestTemplate restTemplate;
+
     private final PrescriptionServiceImpl prescriptionServiceImpl;
 
     public PrescriptionController(PrescriptionServiceImpl prescriptionServiceImpl) {
@@ -149,5 +156,16 @@ public class PrescriptionController {
         model.addAttribute("prescriptionCount", prescriptionCount);
         model.addAttribute("formattedDate", formattedDate);
         return "prescription-report";
+    }
+
+    // consume rest API
+    @GetMapping("/api-data")
+    public String ApiData(Model model) {
+        String uri = "https://rxnav.nlm.nih.gov/REST/interaction/interaction.json?rxcui=341248";
+        RestTemplate restTemplate = new RestTemplate();
+        JsonNode jsonNode = restTemplate.getForObject(uri, JsonNode.class);
+        model.addAttribute("apiData", jsonNode);
+
+        return "api-data";
     }
 }
